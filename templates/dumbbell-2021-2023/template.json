@@ -1,0 +1,184 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Dumbbell chart: ordinary beds per 1,000 residents by region, 2021 and 2023. Each region is a line joining its two values.",
+  "title": {
+    "text": "Ordinary beds per 1,000 residents by region, 2021 vs 2023",
+    "subtitle": "Each line joins the 2021 and 2023 values of one region. All disciplines, ordinary regime only."
+  },
+  "width": "container",
+  "height": {
+    "step": 22
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "transform": [
+    {
+      "filter": "datum.year == 2021 || datum.year == 2023"
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "subtitlePadding": 6,
+      "offset": 20
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    }
+  },
+  "encoding": {
+    "y": {
+      "field": "__dataset.0__",
+      "type": "nominal",
+      "sort": {
+        "field": "__dataset.1__",
+        "op": "min",
+        "order": "ascending"
+      },
+      "title": null
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "color": "#a8a69e",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "__dataset.3__",
+          "type": "quantitative",
+          "title": "Ordinary beds per 1,000 residents",
+          "scale": {
+            "zero": false
+          }
+        },
+        "detail": {
+          "field": "__dataset.0__",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 90
+      },
+      "encoding": {
+        "x": {
+          "field": "__dataset.3__",
+          "type": "quantitative",
+          "scale": {
+            "zero": false
+          }
+        },
+        "color": {
+          "field": "__dataset.2__",
+          "type": "nominal",
+          "title": "Year",
+          "scale": {
+            "domain": [
+              2021,
+              2023
+            ],
+            "range": [
+              "#2a78d6",
+              "#eb6834"
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "__dataset.0__",
+            "type": "nominal",
+            "title": "Region"
+          },
+          {
+            "field": "__dataset.2__",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "__dataset.3__",
+            "type": "quantitative",
+            "title": "Beds per 1,000",
+            "format": ".2f"
+          }
+        ]
+      }
+    }
+  ],
+  "usermeta": {
+    "deneb": {
+      "build": "2.0.0",
+      "metaVersion": 2,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.3"
+    },
+    "information": {
+      "name": "Dumbbell chart: 2021 vs 2023",
+      "description": "For each region, the ordinary beds per 1,000 residents in 2021 and 2023 joined by a line, so the change is visible at a glance.",
+      "author": "deneb-gallery project",
+      "uuid": "e645c56f-f245-4318-93e1-a68e0f29f8a9",
+      "generated": "2026-11-10T00:00:00Z"
+    },
+    "datasets": {
+      "dataset": [
+        {
+          "key": "__dataset.0__",
+          "name": "region_name",
+          "description": "Region or autonomous province",
+          "kind": "column",
+          "type": "text"
+        },
+        {
+          "key": "__dataset.1__",
+          "name": "region_order",
+          "description": "Ministry display order of the region (sort key)",
+          "kind": "column",
+          "type": "numeric"
+        },
+        {
+          "key": "__dataset.2__",
+          "name": "year",
+          "description": "Reference year (1 January)",
+          "kind": "column",
+          "type": "numeric"
+        },
+        {
+          "key": "__dataset.3__",
+          "name": "beds_per_1000",
+          "description": "Ordinary beds per 1,000 residents, region and year",
+          "kind": "column",
+          "type": "numeric"
+        }
+      ]
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "contextMenuSelector": true,
+      "selection": false,
+      "highlight": false,
+      "dataPointLimit": 250
+    }
+  }
+}

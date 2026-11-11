@@ -1,0 +1,203 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Ranked bar chart: ordinary beds per 1,000 residents by region in 2023, sorted from highest to lowest. Bars above the national value are blue, those below are grey; a dashed line marks Italy and each bar carries its value.",
+  "title": {
+    "text": "Regions ranked by ordinary beds per 1,000 residents, 2023",
+    "subtitle": "Blue: above the national value (dashed line). Grey: below. All disciplines, ordinary regime only."
+  },
+  "width": "container",
+  "height": {
+    "step": 20
+  },
+  "data": {
+    "url": "data/regions_2023.json"
+  },
+  "transform": [
+    {
+      "joinaggregate": [
+        {
+          "op": "max",
+          "field": "beds_per_1000",
+          "as": "max_value"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.max_value * 1.13",
+      "as": "label_x"
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "offset": 20,
+      "subtitlePadding": 6
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 3,
+        "height": {
+          "band": 0.62
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "region_name",
+          "type": "nominal",
+          "sort": {
+            "field": "beds_per_1000",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labelPadding": 8,
+            "labelFontSize": 11
+          }
+        },
+        "x": {
+          "field": "beds_per_1000",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "zero": true
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum['beds_per_1000'] >= datum['national_per_1000']",
+            "value": "#2a78d6"
+          },
+          "value": "#c8c6c4"
+        },
+        "tooltip": [
+          {
+            "field": "region_name",
+            "type": "nominal",
+            "title": "Region"
+          },
+          {
+            "field": "beds_per_1000",
+            "type": "quantitative",
+            "title": "Beds per 1,000",
+            "format": ".2f"
+          },
+          {
+            "field": "national_per_1000",
+            "type": "quantitative",
+            "title": "Italy, per 1,000",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "fontSize": 11,
+        "color": "#52514e"
+      },
+      "encoding": {
+        "y": {
+          "field": "region_name",
+          "type": "nominal",
+          "sort": {
+            "field": "beds_per_1000",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "label_x",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "beds_per_1000",
+          "type": "quantitative",
+          "format": ".2f"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#0b0b0b",
+        "strokeDash": [
+          4,
+          3
+        ],
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "aggregate": "mean",
+          "field": "national_per_1000",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "mean",
+              "field": "national_per_1000",
+              "as": "italy"
+            }
+          ]
+        },
+        {
+          "calculate": "'Italy ' + format(datum.italy, '.2f')",
+          "as": "italy_label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 4,
+        "dy": -2,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#0b0b0b"
+      },
+      "encoding": {
+        "x": {
+          "field": "italy",
+          "type": "quantitative"
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "italy_label",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

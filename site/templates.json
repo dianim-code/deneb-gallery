@@ -1,0 +1,50 @@
+[
+  {
+    "id": "bullet-beds-per-1000",
+    "title": "Bullet chart: beds per 1,000 residents",
+    "description": "Ordinary beds per 1,000 residents by region against the national value, one bar per region with a national tick.",
+    "readme": "https://github.com/dianim-code/deneb-gallery/blob/main/templates/bullet-beds-per-1000/README.md",
+    "template": "templates/bullet-beds-per-1000/template.json",
+    "spec": "templates/bullet-beds-per-1000/spec.vl.json"
+  },
+  {
+    "id": "ranked-bar-national-average",
+    "title": "Ranked bar with national average",
+    "description": "Regions ranked by ordinary beds per 1,000 residents, with a dashed reference line at the national average.",
+    "readme": "https://github.com/dianim-code/deneb-gallery/blob/main/templates/ranked-bar-national-average/README.md",
+    "template": "templates/ranked-bar-national-average/template.json",
+    "spec": "templates/ranked-bar-national-average/spec.vl.json"
+  },
+  {
+    "id": "small-multiples-region-trend",
+    "title": "Small multiples by region",
+    "description": "One mini line chart per region showing ordinary beds per 1,000 residents from 2021 to 2023, with an independent y scale per panel.",
+    "readme": "https://github.com/dianim-code/deneb-gallery/blob/main/templates/small-multiples-region-trend/README.md",
+    "template": "templates/small-multiples-region-trend/template.json",
+    "spec": "templates/small-multiples-region-trend/spec.vl.json"
+  },
+  {
+    "id": "slope-chart-yoy",
+    "title": "Year-over-year slope chart",
+    "description": "Ordinary beds per 1,000 residents from 2022 to 2023 for each region, one line per region coloured by macro area.",
+    "readme": "https://github.com/dianim-code/deneb-gallery/blob/main/templates/slope-chart-yoy/README.md",
+    "template": "templates/slope-chart-yoy/template.json",
+    "spec": "templates/slope-chart-yoy/spec.vl.json"
+  },
+  {
+    "id": "dumbbell-2021-2023",
+    "title": "Dumbbell chart: 2021 vs 2023",
+    "description": "For each region, the ordinary beds per 1,000 residents in 2021 and 2023 joined by a line, so the change is visible at a glance.",
+    "readme": "https://github.com/dianim-code/deneb-gallery/blob/main/templates/dumbbell-2021-2023/README.md",
+    "template": "templates/dumbbell-2021-2023/template.json",
+    "spec": "templates/dumbbell-2021-2023/spec.vl.json"
+  },
+  {
+    "id": "heatmap-discipline-region",
+    "title": "Heatmap: discipline by region",
+    "description": "Ordinary beds per 1,000 residents for the ten largest disciplines (by national ordinary beds) across all regions, 2023.",
+    "readme": "https://github.com/dianim-code/deneb-gallery/blob/main/templates/heatmap-discipline-region/README.md",
+    "template": "templates/heatmap-discipline-region/template.json",
+    "spec": "templates/heatmap-discipline-region/spec.vl.json"
+  }
+]

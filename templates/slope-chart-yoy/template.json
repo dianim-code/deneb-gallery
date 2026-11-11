@@ -1,0 +1,387 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Year-over-year slope chart: ordinary beds per 1,000 residents by region, 2022 to 2023. One line per region, coloured by macro area. Only the regions that tell the story are labelled, to avoid overlapping text: the three largest drops, any increase, the highest and the lowest region.",
+  "title": {
+    "text": "Change in ordinary beds per 1,000 residents, 2022 to 2023",
+    "subtitle": "Highlighted: three largest drops, any increase, highest and lowest region. Hover the grey lines for the others."
+  },
+  "width": "container",
+  "height": 520,
+  "data": {
+    "name": "dataset"
+  },
+  "transform": [
+    {
+      "filter": "datum['__dataset.2__'] >= 2022 && datum['__dataset.2__'] <= 2023"
+    },
+    {
+      "calculate": "datum['__dataset.2__'] == 2022 ? datum['__dataset.3__'] : null",
+      "as": "v2022"
+    },
+    {
+      "calculate": "datum['__dataset.2__'] == 2023 ? datum['__dataset.3__'] : null",
+      "as": "v2023"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "max",
+          "field": "v2022",
+          "as": "start"
+        },
+        {
+          "op": "max",
+          "field": "v2023",
+          "as": "end"
+        }
+      ],
+      "groupby": [
+        "__dataset.0__"
+      ]
+    },
+    {
+      "calculate": "datum.end - datum.start",
+      "as": "change"
+    },
+    {
+      "window": [
+        {
+          "op": "dense_rank",
+          "as": "drop_rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "change",
+          "order": "ascending"
+        }
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "dense_rank",
+          "as": "high_rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "end",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "dense_rank",
+          "as": "low_rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "end",
+          "order": "ascending"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.drop_rank <= 3 || datum.change > 0 || datum.high_rank == 1 || datum.low_rank == 1",
+      "as": "highlight"
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "subtitlePadding": 6,
+      "offset": 20
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "orient": "top",
+      "direction": "horizontal"
+    }
+  },
+  "encoding": {
+    "x": {
+      "field": "__dataset.2__",
+      "type": "ordinal",
+      "title": null,
+      "axis": {
+        "labelAngle": 0,
+        "domain": false,
+        "ticks": false,
+        "labelFontSize": 12,
+        "labelFontWeight": "bold"
+      },
+      "scale": {
+        "padding": 0.15
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "y": {
+          "field": "__dataset.3__",
+          "type": "quantitative",
+          "title": "Ordinary beds per 1,000 residents",
+          "scale": {
+            "zero": false
+          }
+        },
+        "color": {
+          "field": "__dataset.1__",
+          "type": "nominal",
+          "title": "Macro area",
+          "scale": {
+            "domain": [
+              "Nord",
+              "Centro",
+              "Sud e Isole"
+            ],
+            "range": [
+              "#2a78d6",
+              "#eb6834",
+              "#1baf7a"
+            ]
+          }
+        },
+        "detail": {
+          "field": "__dataset.0__",
+          "type": "nominal"
+        },
+        "opacity": {
+          "condition": {
+            "test": "datum.highlight",
+            "value": 0.95
+          },
+          "value": 0.18
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 50
+      },
+      "encoding": {
+        "y": {
+          "field": "__dataset.3__",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "__dataset.1__",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Nord",
+              "Centro",
+              "Sud e Isole"
+            ],
+            "range": [
+              "#2a78d6",
+              "#eb6834",
+              "#1baf7a"
+            ]
+          }
+        },
+        "detail": {
+          "field": "__dataset.0__",
+          "type": "nominal"
+        },
+        "tooltip": [
+          {
+            "field": "__dataset.0__",
+            "type": "nominal",
+            "title": "Region"
+          },
+          {
+            "field": "__dataset.2__",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "__dataset.3__",
+            "type": "quantitative",
+            "title": "Beds per 1,000",
+            "format": ".2f"
+          }
+        ],
+        "opacity": {
+          "condition": {
+            "test": "datum.highlight",
+            "value": 0.95
+          },
+          "value": 0.18
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "joinaggregate": [
+            {
+              "op": "min",
+              "field": "__dataset.3__",
+              "as": "y_min"
+            },
+            {
+              "op": "max",
+              "field": "__dataset.3__",
+              "as": "y_max"
+            }
+          ]
+        },
+        {
+          "filter": "datum['__dataset.2__'] == 2023 && datum.highlight"
+        },
+        {
+          "calculate": "(datum.y_max - datum.y_min) * 0.028",
+          "as": "label_gap"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "label_rank"
+            }
+          ],
+          "sort": [
+            {
+              "field": "__dataset.3__",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "calculate": "datum['__dataset.3__'] + datum.label_rank * datum.label_gap",
+          "as": "label_shifted"
+        },
+        {
+          "window": [
+            {
+              "op": "min",
+              "field": "label_shifted",
+              "as": "label_floor"
+            }
+          ],
+          "sort": [
+            {
+              "field": "__dataset.3__",
+              "order": "descending"
+            }
+          ],
+          "frame": [
+            null,
+            0
+          ]
+        },
+        {
+          "calculate": "datum.label_floor - datum.label_rank * datum.label_gap",
+          "as": "label_y"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 9,
+        "fontSize": 11
+      },
+      "encoding": {
+        "x": {
+          "field": "__dataset.2__",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "label_y",
+          "type": "quantitative",
+          "title": "Ordinary beds per 1,000 residents"
+        },
+        "text": {
+          "field": "__dataset.0__",
+          "type": "nominal"
+        },
+        "color": {
+          "value": "#252423"
+        }
+      }
+    }
+  ],
+  "usermeta": {
+    "deneb": {
+      "build": "2.0.0",
+      "metaVersion": 2,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.3"
+    },
+    "information": {
+      "name": "Year-over-year slope chart",
+      "description": "Ordinary beds per 1,000 residents from 2022 to 2023 for each region, one line per region coloured by macro area.",
+      "author": "deneb-gallery project",
+      "uuid": "e1057aed-c811-4b2b-8e6a-d6f6f0f9d503",
+      "generated": "2026-11-10T00:00:00Z"
+    },
+    "datasets": {
+      "dataset": [
+        {
+          "key": "__dataset.0__",
+          "name": "region_name",
+          "description": "Region or autonomous province",
+          "kind": "column",
+          "type": "text"
+        },
+        {
+          "key": "__dataset.1__",
+          "name": "macro_area",
+          "description": "Three-way macro area (Nord, Centro, Sud e Isole)",
+          "kind": "column",
+          "type": "text"
+        },
+        {
+          "key": "__dataset.2__",
+          "name": "year",
+          "description": "Reference year (1 January)",
+          "kind": "column",
+          "type": "numeric"
+        },
+        {
+          "key": "__dataset.3__",
+          "name": "beds_per_1000",
+          "description": "Ordinary beds per 1,000 residents, region and year",
+          "kind": "column",
+          "type": "numeric"
+        }
+      ]
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "contextMenuSelector": true,
+      "selection": false,
+      "highlight": false,
+      "dataPointLimit": 250
+    }
+  }
+}

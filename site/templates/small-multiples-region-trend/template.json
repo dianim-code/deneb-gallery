@@ -1,0 +1,161 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Small multiples: one line per region showing ordinary beds per 1,000 residents, 2021 to 2023. Each panel has its own y scale.",
+  "title": {
+    "text": "Ordinary beds per 1,000 residents by region, 2021-2023",
+    "subtitle": "One panel per region, independent y scales. All disciplines, ordinary regime only."
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "subtitlePadding": 6,
+      "offset": 20
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "header": {
+      "labelColor": "#0b0b0b",
+      "titleColor": "#52514e"
+    }
+  },
+  "facet": {
+    "field": "__dataset.0__",
+    "type": "nominal",
+    "sort": {
+      "field": "__dataset.1__",
+      "op": "min",
+      "order": "ascending"
+    },
+    "title": null,
+    "header": {
+      "labelFontSize": 11,
+      "labelAnchor": "start"
+    }
+  },
+  "columns": 4,
+  "spec": {
+    "width": 150,
+    "height": 90,
+    "mark": {
+      "type": "line",
+      "color": "#2a78d6",
+      "point": {
+        "filled": true,
+        "size": 30,
+        "color": "#2a78d6"
+      },
+      "strokeWidth": 2
+    },
+    "encoding": {
+      "x": {
+        "field": "__dataset.2__",
+        "type": "ordinal",
+        "title": null,
+        "axis": {
+          "labelAngle": 0
+        }
+      },
+      "y": {
+        "field": "__dataset.3__",
+        "type": "quantitative",
+        "title": null,
+        "scale": {
+          "zero": false
+        }
+      },
+      "tooltip": [
+        {
+          "field": "__dataset.0__",
+          "type": "nominal",
+          "title": "Region"
+        },
+        {
+          "field": "__dataset.2__",
+          "type": "ordinal",
+          "title": "Year"
+        },
+        {
+          "field": "__dataset.3__",
+          "type": "quantitative",
+          "title": "Beds per 1,000",
+          "format": ".2f"
+        }
+      ]
+    }
+  },
+  "resolve": {
+    "scale": {
+      "y": "independent"
+    }
+  },
+  "usermeta": {
+    "deneb": {
+      "build": "2.0.0",
+      "metaVersion": 2,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.3"
+    },
+    "information": {
+      "name": "Small multiples by region",
+      "description": "One mini line chart per region showing ordinary beds per 1,000 residents from 2021 to 2023, with an independent y scale per panel.",
+      "author": "deneb-gallery project",
+      "uuid": "72526052-1a3a-4a53-8834-347b4cc64c7c",
+      "generated": "2026-11-10T00:00:00Z"
+    },
+    "datasets": {
+      "dataset": [
+        {
+          "key": "__dataset.0__",
+          "name": "region_name",
+          "description": "Region or autonomous province",
+          "kind": "column",
+          "type": "text"
+        },
+        {
+          "key": "__dataset.1__",
+          "name": "region_order",
+          "description": "Ministry display order of the region (sort key)",
+          "kind": "column",
+          "type": "numeric"
+        },
+        {
+          "key": "__dataset.2__",
+          "name": "year",
+          "description": "Reference year (1 January)",
+          "kind": "column",
+          "type": "numeric"
+        },
+        {
+          "key": "__dataset.3__",
+          "name": "beds_per_1000",
+          "description": "Ordinary beds per 1,000 residents, region and year",
+          "kind": "column",
+          "type": "numeric"
+        }
+      ]
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "contextMenuSelector": true,
+      "selection": false,
+      "highlight": false,
+      "dataPointLimit": 250
+    }
+  }
+}

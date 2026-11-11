@@ -1,0 +1,104 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Bullet chart: ordinary beds per 1,000 residents by region in 2023, with the national value as a tick.",
+  "title": {
+    "text": "Ordinary hospital beds per 1,000 residents, 2023",
+    "subtitle": "Bar: region. Tick: Italy. All disciplines, ordinary regime only."
+  },
+  "width": "container",
+  "height": {
+    "step": 20
+  },
+  "data": {
+    "url": "data/regions_2023.json"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "subtitlePadding": 6,
+      "offset": 20
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    }
+  },
+  "encoding": {
+    "y": {
+      "field": "region_name",
+      "type": "nominal",
+      "sort": {
+        "field": "beds_per_1000",
+        "op": "sum",
+        "order": "descending"
+      },
+      "title": null
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "color": "#2a78d6",
+        "cornerRadiusEnd": 3
+      },
+      "encoding": {
+        "x": {
+          "field": "beds_per_1000",
+          "type": "quantitative",
+          "title": "Ordinary beds per 1,000 residents",
+          "scale": {
+            "zero": true
+          }
+        },
+        "tooltip": [
+          {
+            "field": "region_name",
+            "type": "nominal",
+            "title": "Region"
+          },
+          {
+            "field": "beds_per_1000",
+            "type": "quantitative",
+            "title": "Beds per 1,000",
+            "format": ".2f"
+          },
+          {
+            "field": "national_per_1000",
+            "type": "quantitative",
+            "title": "Italy, per 1,000",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "color": "#0b0b0b",
+        "orient": "vertical",
+        "thickness": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "national_per_1000",
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Bullet chart: ordinary beds per 1,000 residents by region in 2023, with the national value as a tick.",
+  "title": {
+    "text": "Ordinary hospital beds per 1,000 residents, 2023",
+    "subtitle": "Bar: region. Tick: Italy. All disciplines, ordinary regime only."
+  },
+  "width": "container",
+  "height": {
+    "step": 20
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "subtitlePadding": 6,
+      "offset": 20
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    }
+  },
+  "encoding": {
+    "y": {
+      "field": "__dataset.0__",
+      "type": "nominal",
+      "sort": {
+        "field": "__dataset.1__",
+        "op": "sum",
+        "order": "descending"
+      },
+      "title": null
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "color": "#2a78d6",
+        "cornerRadiusEnd": 3
+      },
+      "encoding": {
+        "x": {
+          "field": "__dataset.1__",
+          "type": "quantitative",
+          "title": "Ordinary beds per 1,000 residents",
+          "scale": {
+            "zero": true
+          }
+        },
+        "tooltip": [
+          {
+            "field": "__dataset.0__",
+            "type": "nominal",
+            "title": "Region"
+          },
+          {
+            "field": "__dataset.1__",
+            "type": "quantitative",
+            "title": "Beds per 1,000",
+            "format": ".2f"
+          },
+          {
+            "field": "__dataset.2__",
+            "type": "quantitative",
+            "title": "Italy, per 1,000",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "color": "#0b0b0b",
+        "orient": "vertical",
+        "thickness": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "__dataset.2__",
+          "type": "quantitative"
+        }
+      }
+    }
+  ],
+  "usermeta": {
+    "deneb": {
+      "build": "2.0.0",
+      "metaVersion": 2,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.3"
+    },
+    "information": {
+      "name": "Bullet chart: beds per 1,000 residents",
+      "description": "Ordinary beds per 1,000 residents by region against the national value, one bar per region with a national tick.",
+      "author": "deneb-gallery project",
+      "uuid": "7e9566da-93a7-449c-a897-8fd18698c46a",
+      "generated": "2026-11-10T00:00:00Z"
+    },
+    "datasets": {
+      "dataset": [
+        {
+          "key": "__dataset.0__",
+          "name": "region_name",
+          "description": "Region or autonomous province",
+          "kind": "column",
+          "type": "text"
+        },
+        {
+          "key": "__dataset.1__",
+          "name": "beds_per_1000",
+          "description": "Ordinary beds per 1,000 residents, region, 2023",
+          "kind": "column",
+          "type": "numeric"
+        },
+        {
+          "key": "__dataset.2__",
+          "name": "national_per_1000",
+          "description": "Ordinary beds per 1,000 residents, Italy, 2023",
+          "kind": "column",
+          "type": "numeric"
+        }
+      ]
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "contextMenuSelector": true,
+      "selection": false,
+      "highlight": false,
+      "dataPointLimit": 250
+    }
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Ranked bar chart: ordinary beds per 1,000 residents by region in 2023, sorted from highest to lowest. Bars above the national value are blue, those below are grey; a dashed line marks Italy and each bar carries its value.",
+  "title": {
+    "text": "Regions ranked by ordinary beds per 1,000 residents, 2023",
+    "subtitle": "Blue: above the national value (dashed line). Grey: below. All disciplines, ordinary regime only."
+  },
+  "width": "container",
+  "height": {
+    "step": 20
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "transform": [
+    {
+      "joinaggregate": [
+        {
+          "op": "max",
+          "field": "__dataset.1__",
+          "as": "max_value"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.max_value * 1.13",
+      "as": "label_x"
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "offset": 20,
+      "subtitlePadding": 6
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 3,
+        "height": {
+          "band": 0.62
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "__dataset.0__",
+          "type": "nominal",
+          "sort": {
+            "field": "__dataset.1__",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labelPadding": 8,
+            "labelFontSize": 11
+          }
+        },
+        "x": {
+          "field": "__dataset.1__",
+          "type": "quantitative",
+          "axis": null,
+          "scale": {
+            "zero": true
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum['__dataset.1__'] >= datum['__dataset.2__']",
+            "value": "#2a78d6"
+          },
+          "value": "#c8c6c4"
+        },
+        "tooltip": [
+          {
+            "field": "__dataset.0__",
+            "type": "nominal",
+            "title": "Region"
+          },
+          {
+            "field": "__dataset.1__",
+            "type": "quantitative",
+            "title": "Beds per 1,000",
+            "format": ".2f"
+          },
+          {
+            "field": "__dataset.2__",
+            "type": "quantitative",
+            "title": "Italy, per 1,000",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "fontSize": 11,
+        "color": "#52514e"
+      },
+      "encoding": {
+        "y": {
+          "field": "__dataset.0__",
+          "type": "nominal",
+          "sort": {
+            "field": "__dataset.1__",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "label_x",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "__dataset.1__",
+          "type": "quantitative",
+          "format": ".2f"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#0b0b0b",
+        "strokeDash": [
+          4,
+          3
+        ],
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "aggregate": "mean",
+          "field": "__dataset.2__",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "mean",
+              "field": "__dataset.2__",
+              "as": "italy"
+            }
+          ]
+        },
+        {
+          "calculate": "'Italy ' + format(datum.italy, '.2f')",
+          "as": "italy_label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 4,
+        "dy": -2,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#0b0b0b"
+      },
+      "encoding": {
+        "x": {
+          "field": "italy",
+          "type": "quantitative"
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "italy_label",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "usermeta": {
+    "deneb": {
+      "build": "2.0.0",
+      "metaVersion": 2,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.3"
+    },
+    "information": {
+      "name": "Ranked bar with national average",
+      "description": "Regions ranked by ordinary beds per 1,000 residents, with a dashed reference line at the national average.",
+      "author": "deneb-gallery project",
+      "uuid": "df9b6672-6d1c-45f4-949f-0bbc49326cc3",
+      "generated": "2026-11-10T00:00:00Z"
+    },
+    "datasets": {
+      "dataset": [
+        {
+          "key": "__dataset.0__",
+          "name": "region_name",
+          "description": "Region or autonomous province",
+          "kind": "column",
+          "type": "text"
+        },
+        {
+          "key": "__dataset.1__",
+          "name": "beds_per_1000",
+          "description": "Ordinary beds per 1,000 residents, region, 2023",
+          "kind": "column",
+          "type": "numeric"
+        },
+        {
+          "key": "__dataset.2__",
+          "name": "national_per_1000",
+          "description": "Ordinary beds per 1,000 residents, Italy, 2023",
+          "kind": "column",
+          "type": "numeric"
+        }
+      ]
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "contextMenuSelector": true,
+      "selection": false,
+      "highlight": false,
+      "dataPointLimit": 250
+    }
+  }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deneb Template Gallery</title>
+  <meta name="description" content="Reusable Deneb (Power BI) chart templates in Vega-Lite, rendered live on a gold healthcare dataset.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/vega@6.4.0/build/vega.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.4.3/build/vega-lite.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.1.0/build/vega-embed.min.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="eyebrow">Deneb for Power BI</p>
+      <h1>Deneb template gallery</h1>
+      <p class="lead">Six reusable Vega-Lite templates, each rendered here on the same gold dataset: ordinary hospital beds per 1,000 residents, Italy 2021 to 2023. Copy a template and import it into a Deneb visual, or open its README for the field list.</p>
+      <p class="meta">Versions pinned to those bundled by Deneb 2.0.1: Vega 6.4.0, Vega-Lite 6.4.3, vega-embed 7.1.0.
+        Source: <a href="https://github.com/dianim-code/deneb-gallery">github.com/dianim-code/deneb-gallery</a>.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p id="load-error" class="notice" hidden></p>
+    <div id="gallery" class="grid" aria-live="polite"></div>
+
+    <section class="howto" aria-labelledby="howto-title">
+      <h2 id="howto-title">Use a template in Power BI</h2>
+      <ol>
+        <li>Click <strong>Copy template</strong> on a card. The template JSON is copied to the clipboard.</li>
+        <li>In Power BI Desktop, add a Deneb visual, then add at least one column or measure so the advanced editor opens.</li>
+        <li>Open the advanced editor, choose <strong>Create New Specification</strong>, select <strong>Existing template</strong>, and paste the JSON (Ctrl+V).</li>
+        <li>Map each placeholder to a column or measure from the list, then click <strong>Create</strong>. Each card's README gives the field list and types.</li>
+      </ol>
+      <p>Import steps follow the <a href="https://deneb.guide/docs/templates">Deneb templates documentation</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>Data.</strong> Hospital beds: Ministero della Salute, published under the
+        <a href="https://www.dati.gov.it/iodl/2.0/">Italian Open Data License v2.0</a>. Population: ISTAT, published under
+        <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. The data has been cleaned, re-keyed and aggregated for this
+        project. Neither publisher endorses it. Sources and licences are listed in the
+        <a href="https://github.com/dianim-code/deneb-gallery/blob/main/contract/VENDORED.md">data contract notes</a>.</p>
+      <p>Code and templates: <a href="https://github.com/dianim-code/deneb-gallery/blob/main/LICENSE">MIT licence</a>.</p>
+    </div>
+  </footer>
+</body>
+</html>

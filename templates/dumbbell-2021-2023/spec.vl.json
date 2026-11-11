@@ -1,0 +1,129 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Dumbbell chart: ordinary beds per 1,000 residents by region, 2021 and 2023. Each region is a line joining its two values.",
+  "title": {
+    "text": "Ordinary beds per 1,000 residents by region, 2021 vs 2023",
+    "subtitle": "Each line joins the 2021 and 2023 values of one region. All disciplines, ordinary regime only."
+  },
+  "width": "container",
+  "height": {
+    "step": 22
+  },
+  "data": {
+    "url": "../../site/data/regions_by_year.json"
+  },
+  "transform": [
+    {
+      "filter": "datum.year == 2021 || datum.year == 2023"
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "subtitlePadding": 6,
+      "offset": 20
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    }
+  },
+  "encoding": {
+    "y": {
+      "field": "region_name",
+      "type": "nominal",
+      "sort": {
+        "field": "region_order",
+        "op": "min",
+        "order": "ascending"
+      },
+      "title": null
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "color": "#a8a69e",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "beds_per_1000",
+          "type": "quantitative",
+          "title": "Ordinary beds per 1,000 residents",
+          "scale": {
+            "zero": false
+          }
+        },
+        "detail": {
+          "field": "region_name",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 90
+      },
+      "encoding": {
+        "x": {
+          "field": "beds_per_1000",
+          "type": "quantitative",
+          "scale": {
+            "zero": false
+          }
+        },
+        "color": {
+          "field": "year",
+          "type": "nominal",
+          "title": "Year",
+          "scale": {
+            "domain": [
+              2021,
+              2023
+            ],
+            "range": [
+              "#2a78d6",
+              "#eb6834"
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "region_name",
+            "type": "nominal",
+            "title": "Region"
+          },
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "beds_per_1000",
+            "type": "quantitative",
+            "title": "Beds per 1,000",
+            "format": ".2f"
+          }
+        ]
+      }
+    }
+  ]
+}

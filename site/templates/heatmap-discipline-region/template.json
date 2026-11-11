@@ -1,0 +1,160 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Heatmap: ordinary beds per 1,000 residents by discipline (rows) and region (columns), 2023, for the ten largest disciplines by national ordinary beds.",
+  "title": {
+    "text": "Ordinary beds per 1,000 residents by discipline and region, 2023",
+    "subtitle": "Ten largest disciplines by national ordinary beds. Rows sorted by national total. Hover a cell for the value."
+  },
+  "width": "container",
+  "height": {
+    "step": 22
+  },
+  "data": {
+    "name": "dataset"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "subtitlePadding": 6,
+      "offset": 20
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e"
+    }
+  },
+  "mark": {
+    "type": "rect",
+    "stroke": "#fcfcfb",
+    "strokeWidth": 2
+  },
+  "encoding": {
+    "x": {
+      "field": "__dataset.1__",
+      "type": "nominal",
+      "sort": {
+        "field": "__dataset.2__",
+        "op": "min",
+        "order": "ascending"
+      },
+      "title": null,
+      "axis": {
+        "labelAngle": -45
+      }
+    },
+    "y": {
+      "field": "__dataset.0__",
+      "type": "nominal",
+      "sort": {
+        "field": "__dataset.3__",
+        "op": "sum",
+        "order": "descending"
+      },
+      "title": null
+    },
+    "color": {
+      "field": "__dataset.3__",
+      "type": "quantitative",
+      "title": "Beds per 1,000",
+      "scale": {
+        "scheme": "blues"
+      },
+      "legend": {
+        "orient": "bottom",
+        "gradientLength": 320
+      }
+    },
+    "tooltip": [
+      {
+        "field": "__dataset.0__",
+        "type": "nominal",
+        "title": "Discipline"
+      },
+      {
+        "field": "__dataset.1__",
+        "type": "nominal",
+        "title": "Region"
+      },
+      {
+        "field": "__dataset.3__",
+        "type": "quantitative",
+        "title": "Beds per 1,000",
+        "format": ".2f"
+      }
+    ]
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum['__dataset.3__'])"
+    }
+  ],
+  "usermeta": {
+    "deneb": {
+      "build": "2.0.0",
+      "metaVersion": 2,
+      "provider": "vegaLite",
+      "providerVersion": "6.4.3"
+    },
+    "information": {
+      "name": "Heatmap: discipline by region",
+      "description": "Ordinary beds per 1,000 residents for the ten largest disciplines (by national ordinary beds) across all regions, 2023.",
+      "author": "deneb-gallery project",
+      "uuid": "680577be-2baa-4274-9b45-12c2b6c45a36",
+      "generated": "2026-11-10T00:00:00Z"
+    },
+    "datasets": {
+      "dataset": [
+        {
+          "key": "__dataset.0__",
+          "name": "discipline_name",
+          "description": "Hospital discipline (Ministry name)",
+          "kind": "column",
+          "type": "text"
+        },
+        {
+          "key": "__dataset.1__",
+          "name": "region_name",
+          "description": "Region or autonomous province",
+          "kind": "column",
+          "type": "text"
+        },
+        {
+          "key": "__dataset.2__",
+          "name": "region_order",
+          "description": "Ministry display order of the region (sort key)",
+          "kind": "column",
+          "type": "numeric"
+        },
+        {
+          "key": "__dataset.3__",
+          "name": "beds_per_1000",
+          "description": "Ordinary beds per 1,000 residents, discipline and region, 2023",
+          "kind": "column",
+          "type": "numeric"
+        }
+      ]
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "contextMenuSelector": true,
+      "selection": false,
+      "highlight": false,
+      "dataPointLimit": 250
+    }
+  }
+}

@@ -1,0 +1,12 @@
+# --- Local preview / tooling ---
+node_modules/
+__pycache__/
+_site/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.cache/
+.venv/

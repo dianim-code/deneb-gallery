@@ -1,0 +1,332 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.4.3.json",
+  "description": "Year-over-year slope chart: ordinary beds per 1,000 residents by region, 2022 to 2023. One line per region, coloured by macro area. Only the regions that tell the story are labelled, to avoid overlapping text: the three largest drops, any increase, the highest and the lowest region.",
+  "title": {
+    "text": "Change in ordinary beds per 1,000 residents, 2022 to 2023",
+    "subtitle": "Highlighted: three largest drops, any increase, highest and lowest region. Hover the grey lines for the others."
+  },
+  "width": "container",
+  "height": 520,
+  "data": {
+    "url": "../../site/data/regions_by_year.json"
+  },
+  "transform": [
+    {
+      "filter": "datum['year'] >= 2022 && datum['year'] <= 2023"
+    },
+    {
+      "calculate": "datum['year'] == 2022 ? datum['beds_per_1000'] : null",
+      "as": "v2022"
+    },
+    {
+      "calculate": "datum['year'] == 2023 ? datum['beds_per_1000'] : null",
+      "as": "v2023"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "max",
+          "field": "v2022",
+          "as": "start"
+        },
+        {
+          "op": "max",
+          "field": "v2023",
+          "as": "end"
+        }
+      ],
+      "groupby": [
+        "region_name"
+      ]
+    },
+    {
+      "calculate": "datum.end - datum.start",
+      "as": "change"
+    },
+    {
+      "window": [
+        {
+          "op": "dense_rank",
+          "as": "drop_rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "change",
+          "order": "ascending"
+        }
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "dense_rank",
+          "as": "high_rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "end",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "dense_rank",
+          "as": "low_rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "end",
+          "order": "ascending"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.drop_rank <= 3 || datum.change > 0 || datum.high_rank == 1 || datum.low_rank == 1",
+      "as": "highlight"
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "title": {
+      "color": "#0b0b0b",
+      "subtitleColor": "#767676",
+      "anchor": "start",
+      "fontSize": 15,
+      "subtitlePadding": 6,
+      "offset": 20
+    },
+    "axis": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "gridColor": "#e4e3df",
+      "domainColor": "#a8a69e",
+      "tickColor": "#a8a69e"
+    },
+    "legend": {
+      "labelColor": "#52514e",
+      "titleColor": "#52514e",
+      "orient": "top",
+      "direction": "horizontal"
+    }
+  },
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "axis": {
+        "labelAngle": 0,
+        "domain": false,
+        "ticks": false,
+        "labelFontSize": 12,
+        "labelFontWeight": "bold"
+      },
+      "scale": {
+        "padding": 0.15
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "y": {
+          "field": "beds_per_1000",
+          "type": "quantitative",
+          "title": "Ordinary beds per 1,000 residents",
+          "scale": {
+            "zero": false
+          }
+        },
+        "color": {
+          "field": "macro_area",
+          "type": "nominal",
+          "title": "Macro area",
+          "scale": {
+            "domain": [
+              "Nord",
+              "Centro",
+              "Sud e Isole"
+            ],
+            "range": [
+              "#2a78d6",
+              "#eb6834",
+              "#1baf7a"
+            ]
+          }
+        },
+        "detail": {
+          "field": "region_name",
+          "type": "nominal"
+        },
+        "opacity": {
+          "condition": {
+            "test": "datum.highlight",
+            "value": 0.95
+          },
+          "value": 0.18
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 50
+      },
+      "encoding": {
+        "y": {
+          "field": "beds_per_1000",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "macro_area",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Nord",
+              "Centro",
+              "Sud e Isole"
+            ],
+            "range": [
+              "#2a78d6",
+              "#eb6834",
+              "#1baf7a"
+            ]
+          }
+        },
+        "detail": {
+          "field": "region_name",
+          "type": "nominal"
+        },
+        "tooltip": [
+          {
+            "field": "region_name",
+            "type": "nominal",
+            "title": "Region"
+          },
+          {
+            "field": "year",
+            "type": "ordinal",
+            "title": "Year"
+          },
+          {
+            "field": "beds_per_1000",
+            "type": "quantitative",
+            "title": "Beds per 1,000",
+            "format": ".2f"
+          }
+        ],
+        "opacity": {
+          "condition": {
+            "test": "datum.highlight",
+            "value": 0.95
+          },
+          "value": 0.18
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "joinaggregate": [
+            {
+              "op": "min",
+              "field": "beds_per_1000",
+              "as": "y_min"
+            },
+            {
+              "op": "max",
+              "field": "beds_per_1000",
+              "as": "y_max"
+            }
+          ]
+        },
+        {
+          "filter": "datum['year'] == 2023 && datum.highlight"
+        },
+        {
+          "calculate": "(datum.y_max - datum.y_min) * 0.028",
+          "as": "label_gap"
+        },
+        {
+          "window": [
+            {
+              "op": "row_number",
+              "as": "label_rank"
+            }
+          ],
+          "sort": [
+            {
+              "field": "beds_per_1000",
+              "order": "descending"
+            }
+          ]
+        },
+        {
+          "calculate": "datum['beds_per_1000'] + datum.label_rank * datum.label_gap",
+          "as": "label_shifted"
+        },
+        {
+          "window": [
+            {
+              "op": "min",
+              "field": "label_shifted",
+              "as": "label_floor"
+            }
+          ],
+          "sort": [
+            {
+              "field": "beds_per_1000",
+              "order": "descending"
+            }
+          ],
+          "frame": [
+            null,
+            0
+          ]
+        },
+        {
+          "calculate": "datum.label_floor - datum.label_rank * datum.label_gap",
+          "as": "label_y"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 9,
+        "fontSize": 11
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "label_y",
+          "type": "quantitative",
+          "title": "Ordinary beds per 1,000 residents"
+        },
+        "text": {
+          "field": "region_name",
+          "type": "nominal"
+        },
+        "color": {
+          "value": "#252423"
+        }
+      }
+    }
+  ]
+}
