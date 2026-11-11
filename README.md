@@ -79,7 +79,7 @@ The server must serve the `site/` folder as the root, which is what `--directory
 - **Sequential scale.** The heatmap uses the ColorBrewer `blues` ramp, a single hue that is colour-vision-deficiency safe.
 - **Dark mode.** The specs are authored in light colours. `site/app.js` swaps them for dark steps when the OS uses dark mode (palette, text, grid, muted bars), reverses the heatmap scale, sets a transparent background and re-renders on a change. The Deneb templates keep the light colours, because Deneb applies its own theme; the trade-off is described in ADR-013.
 - **Version pinning.** Vega 6.4.0, Vega-Lite 6.4.3 and vega-embed 7.1.0 are the versions bundled by Deneb 2.0.1, the latest release (`apps/deneb/package.json` at tag `2.0.1.0`). The gallery loads them from jsDelivr at those exact versions, the specs point at the v6.4.3 schema, and the validator uses that schema. See ADR-011.
-- **Responsive.** Charts use `width: container`; the gallery shows two small-multiple columns on narrow screens. The page has no horizontal scroll at 390 px and 1280 px.
+- **Responsive.** Charts use `width: container`. The small multiples have a fixed panel size (what Power BI needs), so the gallery picks as many columns as the card holds and narrows the panels to fit (three columns on a desktop card, two on a phone), and wraps long titles and subtitles, which Vega does not do on its own. The templates are not changed. No chart is wider than its card and the page has no horizontal scroll at 390 px and 1280 px.
 - **No build step.** The site is static HTML, CSS and JS. `pages.yml` publishes `site/` as it is; the copies of the templates and data are generated and committed.
 
 ## Trade-offs

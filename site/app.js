@@ -50,15 +50,50 @@
     return node;
   }
 
-  function fitSpec(spec) {
+  // Room a facet panel needs besides its own width: y-axis labels and the gap between panels.
+  var PANEL_EXTRA = 55;
+  var MIN_PANEL = 100;
+
+  function fitSpec(spec, width) {
     var copy = themed(spec, isDark());
     // Charts sit on the page surface in both schemes, so no white canvas.
     copy.background = "transparent";
-    // Narrow screens: show small multiples two per row instead of four.
-    if (copy.facet && copy.columns && window.innerWidth < 640) {
-      copy.columns = 2;
+    // Small multiples: as many columns as the card holds (up to the spec's own), panels narrowed to fit.
+    // The templates keep their fixed panel size for Power BI; only the gallery adapts.
+    if (copy.facet && copy.columns && copy.spec && typeof copy.spec.width === "number" && width) {
+      var columns = copy.columns;
+      while (columns > 1 && Math.floor(width / columns) - PANEL_EXTRA < MIN_PANEL) {
+        columns -= 1;
+      }
+      copy.columns = columns;
+      copy.spec.width = Math.min(copy.spec.width, Math.floor(width / columns) - PANEL_EXTRA);
+    }
+    // Long title or subtitle: wrap to the card width, which Vega does not do on its own
+    // (about 8.5 px per character for the 15 px bold title, 6 px for the subtitle).
+    var title = copy.title;
+    if (title && typeof title === "object" && width) {
+      if (typeof title.text === "string") { title.text = wrapLines(title.text, Math.floor(width / 8.5)); }
+      if (typeof title.subtitle === "string") { title.subtitle = wrapLines(title.subtitle, Math.floor(width / 6)); }
     }
     return copy;
+  }
+
+  // Split text into lines of at most maxChars characters, breaking between words.
+  // Returns the text unchanged when it fits on one line.
+  function wrapLines(text, maxChars) {
+    if (text.length <= maxChars) { return text; }
+    var lines = [];
+    var line = "";
+    text.split(" ").forEach(function (word) {
+      if (line && (line + " " + word).length > maxChars) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = line ? line + " " + word : word;
+      }
+    });
+    if (line) { lines.push(line); }
+    return lines;
   }
 
   function getText(url) {
@@ -83,7 +118,7 @@
       card.result = null;
     }
     card.chart.innerHTML = "";
-    return vegaEmbed(card.chart, fitSpec(card.spec), {
+    return vegaEmbed(card.chart, fitSpec(card.spec, card.chart.clientWidth), {
       actions: false,
       renderer: "svg",
       tooltip: true
